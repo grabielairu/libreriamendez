@@ -7,7 +7,7 @@ const supabaseKey = process.env.SUPABASE_API_PRIVATE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default async function handler(req, res) {
-  const { data, error } = await supabase.from("books").select("*");
+  const { data, error } = await supabase.from("products").select("*");
   console.log(data);
   res.status(200).send(JSON.stringify(data, null, 2));
 }

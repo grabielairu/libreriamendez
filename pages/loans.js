@@ -11,15 +11,14 @@ export async function getServerSideProps() {
     },
   };
 }
-export default function TestDB({ data }) {
+export default function Loans({ data }) {
   console.log(data);
   return (
     <main className="h-screen w-screen bg-gray-500">
-      <h1 className="text-4xl text-center text-white">{data[0].title}</h1>
-      {data.map((books) => (
-        <div className="flex" key={books.id}>
-          <h1 className="text-white">{books.title}</h1>
-          <h2 className="text-white text-sm">{books.genre}</h2>
+      {data.map((loans) => (
+        <div className="flex" key={loans.id}>
+          <h1 className="text-white">{loans.title}</h1>
+          <h2 className="text-white text-sm">{loans.genre}</h2>
         </div>
       ))}
     </main>
