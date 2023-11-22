@@ -7,7 +7,7 @@ const supabaseKey = process.env.SUPABASE_API_PRIVATE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default async function handler(req, res) {
-  const { method, body } = req;
+  const { method, body, query } = req;
   switch (method) {
     case "GET":
       // Aquí va el código para manejar el método GET
@@ -37,7 +37,19 @@ export default async function handler(req, res) {
       // Aquí va el código para manejar el método PUT
       break;
     case "DELETE":
-      // Aquí va el código para manejar el método DELETE
+      const { id } = query;
+      if (!id) {
+        return res.status(400).json({ error: 'Se requiere el campo "id"' });
+      }
+      const { data: deleteData, error: deleteError } = await supabase
+        .from("books")
+        .delete()
+        .match({ id });
+      if (deleteError) {
+        console.error(deleteError);
+        return res.status(500).json({ error: deleteError.message });
+      }
+      return res.status(200).json("Libro eliminado correctamente");
       break;
     default:
       res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);

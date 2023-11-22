@@ -9,7 +9,7 @@ export default function Home() {
   const name = "Gabi";
 
   return (
-    <main className="h-screen w-screen bg-gray-500">
+    <main className="h-full w-auto bg-gray-500">
       <h1 className="text-4xl text-center text-white">Hola a mi gato</h1>
       <Link href="/demo" className="text-4xl text-center text-yellow-400">
         Demo
