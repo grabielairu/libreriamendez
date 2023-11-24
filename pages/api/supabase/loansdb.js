@@ -11,20 +11,21 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       // Aquí va el código para manejar el método GET
-      const { data, error } = await supabase.from("books").select("*");
+      const { data, error } = await supabase.from("loans").select("*");
       console.log(data);
       res.status(200).send(JSON.stringify(data, null, 2));
       break;
     case "POST":
       // Aquí va el código para manejar el método POST
       const { data: postData, error: postError } = await supabase
-        .from("books")
+        .from("loans")
         .insert([
           {
+            name: body.name,
+            last_name: body.last_name,
             title: body.title,
-            author: body.author,
-            genre: body.genre,
-            publication_date: body.publication_date,
+            loan_date: body.loan_date,
+            return_date: body.return_date,
           },
         ]);
       if (postError) {
@@ -33,42 +34,23 @@ export default async function handler(req, res) {
       }
       return res.status(200).json("correcto");
       break;
-    case "PUT": // Aquí va el código para manejar el método PUT
-    {
-      const { id, title, author, genre, publication_date } = body;
-      if (!id) {
-        return res.status(400).json({ error: 'Se requiere el campo "id"' });
-      }
-      const { data: putData, error: putError } = await supabase
-        .from("books")
-        .update({
-          title,
-          author,
-          genre,
-          publication_date,
-        })
-        .match({ id });
-      if (putError) {
-        console.error(putError);
-        return res.status(500).json({ error: putError.message });
-      }
-      return res.status(200).json("Libro actualizado correctamente");
-    }
-
+    case "PUT":
+      // Aquí va el código para manejar el método PUT
+      break;
     case "DELETE":
       const { id } = query;
       if (!id) {
         return res.status(400).json({ error: 'Se requiere el campo "id"' });
       }
       const { data: deleteData, error: deleteError } = await supabase
-        .from("books")
+        .from("loans")
         .delete()
         .match({ id });
       if (deleteError) {
         console.error(deleteError);
         return res.status(500).json({ error: deleteError.message });
       }
-      return res.status(200).json("Libro eliminado correctamente");
+      return res.status(200).json("Préstamo eliminado correctamente");
       break;
     default:
       res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);

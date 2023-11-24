@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 //petición a la api
 export async function getServerSideProps() {
@@ -11,7 +11,25 @@ export async function getServerSideProps() {
     },
   };
 }
+
 export default function Products({ data }) {
+  const [selectedProducts, setSelectedProducts] = useState([]);
+
+  const handleSelectProduct = (product) => {
+    setSelectedProducts((prev) => [...prev, product]);
+  };
+
+  const handleRemoveProduct = (productId) => {
+    setSelectedProducts((prev) =>
+      prev.filter((product) => product.id !== productId)
+    );
+  };
+
+  const totalPrice = selectedProducts.reduce(
+    (total, product) => total + product.price,
+    0
+  );
+
   return (
     <main className="h-full w-screen bg-pink-900 p-10">
       {data.map((product) => (
@@ -24,8 +42,27 @@ export default function Products({ data }) {
           <h3 className="text-gray-700 text-lg">{`Precio: ${product.price}`}</h3>{" "}
           {/* Aquí se muestra el precio */}
           <div className="text-indigo-500">{product.options}</div>
+          <button
+            className="text-red-500"
+            onClick={() => handleSelectProduct(product)}
+          >
+            Seleccionar
+          </button>
         </div>
       ))}
+      <h2>Productos seleccionados:</h2>
+      {selectedProducts.map((product) => (
+        <div className="p-2" key={product.id}>
+          <span>{product.name}</span>
+          <button
+            className="p-2 ml-2 bg-red-500"
+            onClick={() => handleRemoveProduct(product.id)}
+          >
+            Eliminar
+          </button>
+        </div>
+      ))}
+      <div>Total: {totalPrice}</div>
     </main>
   );
 }
