@@ -44,6 +44,7 @@ export default function Modal({ open, setOpen, book, getData }) {
       toast.success("Datos guardados");
       console.log(resultado);
       getData();
+      setOpen(false); // Esto cerrará el modal
     } catch (error) {
       console.log(error);
     }
